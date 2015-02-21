@@ -1,0 +1,689 @@
+%!TEX program = xelatex
+\documentclass[xetex]{beamer}
+\usetheme{PaloAlto}
+\usecolortheme{default}
+\input{tex/packages}
+\input{tex/macros}
+\input{tex/tikzDefs}
+
+\title{\LaTeX{} Workshop}
+\author{Άρης Συνοδινός}
+\institute{Πανεπιστήμιο Πατρών}
+\date{\today}
+
+\begin{document}
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+
+\section{Εισαγωγικά}
+
+\begin{frame}{Το \TeX{}}
+	\begin{block}{\TeX{}}
+		Σύστημα στοιχειοθεσίας που αναπτύχθηκε από τον Donald E. Knuth
+		 (Stanford) για την δημιουργία άρτιων κειμένων, ειδικά επιστημονικών
+		 με μαθηματικά. 
+	\end{block}
+	\begin{exampleblock}{\LaTeX{}}
+		Επέκταση του \TeX{} που αναπτύχθηκε από τον Leslie Lamport, με
+		στόχο την εύκολη στοιχειοθεσία κειμένου με χρήση έτοιμων macro-εντολών.
+	\end{exampleblock}
+	\begin{alertblock}{\XeTeX{}}
+		Επέκταση του \LaTeX{} που αναπτύχθηκε από τον Jonathan Kew, που υποστηρίζει
+		Unicode κείμενα, μοντέρνες γραμματοσειρές και πολλά άλλα.
+	\end{alertblock}
+\end{frame}
+
+\begin{frame}{Πλεονεκτήματα}
+	\begin{itemize}
+		\item Το αποτέλεσμα μοιάζει με επαγγελματικού επιπέδου στοιχειοθεσία.
+		Η αλλαγή του στυλ συνήθως είναι αλλαγή μίας γραμμής.
+		\item Εύκολη χρήση μαθηματικών
+		\item Δεν απαιτείται γνώση τυπογραφίας
+		\item Πολύπλοκα επιστημονικά κείμενα διαχειρίζονται απλά
+		\begin{itemize}
+			\item Βιβλιογραφία
+			\item Ευρετήριο
+			\item Ετεροαναφορές
+			\item Πίνακας περιεχομένων, λίστα γραφημάτων/πινάκων κλπ...
+		\end{itemize}
+		\item Ανεξάρτητο λειτουργικού συστήματος/αρχιτεκτονικής
+		\item Ανοιχτού κώδικα
+		\item Κείμενο ASCII/Unicode (VCS/Storage κλπ)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Μειονεκτήματα}
+	\begin{itemize}
+		\item Δύσκολη πρώτη επαφή (απότομη καμπύλη εκμάθησης)
+		\item Δύσκολος σχεδιασμός νέου στυλ
+		\item Τα πακέτα είναι μεγάλα σε απαιτήσεις χώρου
+		\item Πάρα πολλές αλληλεπικαλύψεις πακέτων
+	\end{itemize}
+\end{frame}
+
+\subsection{Δομή}
+
+\begin{frame}[containsverbatim]{Δομή ενός αρχείου}
+\begin{lstlisting}
+\documentclass[options]{class}
+\usepackage{name1,name2,name3}
+\usepackage[options]{name4}
+\author{Name Surname}
+\title{Title}
+\date{\today}
+\begin{document}
+...
+\end{document}
+\end{lstlisting}
+\end{frame}
+
+\section{Προοίμιο}
+\begin{frame}[containsverbatim]{Κλάσεις}
+	\begin{tabular}{c|l}
+		article & Για άρθρα γενικού τύπου \\
+		minimal & Όσο πιο απλό γίνεται \\
+		report  & Για αναφορές\\
+		book    & Για βιβλία \\
+		slides  & Για διαφάνειες \\
+		memoir  & Για απομνημονεύματα \\
+		letter  & Για γράμματα \\
+		beamer  & Για παρουσιάσεις
+	\end{tabular}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Ρυθμίσεις}
+	\begin{tabular}{c|l}
+		font size	& 10pt | 11pt | 12pt \ldots\\
+		paper size	& a4paper | legalpaper \ldots\\
+		equation	& fleqn | leqno\\
+		title 		& titlepage | notitlepage\\
+		columns		& onecolumn | twocolumn\\
+		printing	& oneside | twoside
+	\end{tabular}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Ειδικοί χαρακτήρες}
+\begin{tabular}{lll}
+    $\backslash$~~   & Έναρξη εντολής       	& {\color{green}\verb+$\backslash$+}\\
+                     & σημείωση:              	& {\color{green}\verb+\\+} = newline\\
+    \$               & Λειτουργία Μαθηματικών 	& {\color{green}\verb+\$+}          \\
+    \&               & Πινακοποιητής			& {\color{green}\verb+\&+}          \\
+    \%               & Σχόλιο					& {\color{green}\verb+\%+}          \\
+    \#               & Χρησιμοποιείται στις εντολές	& {\color{green}\verb+\#+} 		\\
+    \textasciitilde  &                      & {\color{green}\verb+\textasciitilde+} \\
+    \textbar         & Κάθετες γραμμές σε πίνακες & {\color{green}\verb+\textbar+}  \\
+    \_               & Δείκτης			    & {\color{green}\verb+\_+}              \\
+    \textasciicircum & Εκθέτης    			& {\color{green}\verb+\textasciicircum+}\\
+    \{ \}            & Κλείσιμο εντολής    	& {\color{green}\verb+\{ \}+}           \\
+    $[\ ]$           & Παράμετροι εντολής   & {\color{green}\verb+$[ ]$+}           \\
+    `` ''            & Εισαγωγικά	      	& {\color{green}\verb+`` ''+}           \\
+    $> <$            & Πριν και μετά από στήλη & {\color{green}\verb+$> <$+}           \\
+  \end{tabular}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Πακέτα και ρυθμίσεις}
+\begin{lstlisting}
+\usepackage{package name}
+\usetheme{theme name}
+\setmainfont[options]{font}
+\setsansfont[options]{font}
+\newcommand{name}[num]{definition}
+\newenvironment{name}[num]{before}{after}
+% Relative Path
+\graphicspath{ {folder/} }
+% Absolute Path
+\graphicspath{ {/path/to/folder/} }
+\end{lstlisting}
+\end{frame}
+
+\section{Έγγραφο}
+\begin{frame}[containsverbatim]{Βασική Δομή}
+\begin{lstlisting}
+\part{}
+\chapter{}
+\section{}
+\subsection{}
+\subsubsection{}
+\paragraph{}
+\subparagraph{}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Αρθρωτό Κείμενο}
+\begin{lstlisting}
+\input{}	% Reads file as it is
+\include{}	% No nesting, Page breaks
+\includeonly{} % Instructs what to include (preamble)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Συνεργασία - Εργαλεία}
+\begin{itemize}
+  \item ShareLaTeX
+  \item Version Control Systems
+    \begin{itemize}
+      \item Απλό κείμενο - Diff!
+      \item \bf{Νέα γραμμή σε κάθε πρόταση!}
+    \end{itemize}
+  \item Κοινή βιβλιογραφία
+\end{itemize}
+\begin{block}{Εργαλεία}
+Πολλά εργαλεία που ξέρετε χρησιμοποιούν ήδη \LaTeX{}!\\
+Matlab \qquad Doxygen \qquad GeoGebra \qquad R \qquad GNUPlot \qquad Python \qquad \LuaTeX{}
+\end{block}
+\end{frame}
+
+\subsection{Περιεχόμενα}
+
+\begin{frame}[containsverbatim]{Περιεχόμενα και λοιπά}
+\begin{lstlisting}
+\tableofcontents
+\listoffigures
+\listoftables
+...
+\bibliographystyle{plain}
+\bibliography{filename.bib}
+\printindex
+\end{lstlisting}
+\end{frame}
+
+\subsection{Μορφοποίηση}
+
+\begin{frame}[containsverbatim]{Διαμόρφωση Κειμένου 1}
+\begin{LTXexample}
+\textit{italics}
+
+\textsl{slanted}
+
+\emph{emphasizing}
+
+\textsc{small caps}
+
+\textbf{bold face}
+
+\textsf{sans serif}
+
+\texttt{typewriter}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Διαμόρφωση Κειμένου 2}
+\begin{LTXexample}
+\tiny{tiny size}
+\scriptsize{script size}
+\footnotesize{footnote size}
+\small{small size}
+\normalsize{normal size}
+\large{large size}
+\Large{Large size}
+\LARGE{LARGE size}
+\huge{huge size}
+\Huge{Huge size}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Υποσημειώσεις}
+\begin{lstlisting}
+It is easy to add a footnote \footnote{like this}.
+\end{lstlisting}
+\fbox{It is easy to add a footnote\footnote[frame]{like this}\\}
+\end{frame}
+
+\subsection{Floats}
+
+\begin{frame}[containsverbatim]{Floats, Λεζάντες κλπ}
+\begin{block}{Floats}
+Είναι δοχεία που τοποθετούνται έξυπνα από τον μεταγλωτιστή στην θέση που τους αρμόζει στο κείμενο. Επιτρέπεται να περιέχουν λεζάντες καθώς και ετικέτες για αναφορά μέσα στο κείμενο.
+\end{block}
+\begin{columns}
+\begin{column}{.5\textwidth}
+\begin{lstlisting}
+\begin{figure}[options]
+\caption{Test}
+\label{fig:label}
+\end{figure}
+\end{lstlisting}
+\end{column}
+\begin{column}{.5\textwidth}
+\begin{lstlisting}
+\begin{table}[options]
+\caption{Test}
+\label{tab:label}
+\end{table}
+\end{lstlisting}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Subfloats}
+\begin{LTXexample}[basicstyle=\ttfamily\scriptsize]
+\begin{figure}
+\centering
+  \begin{subfigure}[b]{0.3\textwidth}
+  \includegraphics[width=\textwidth]{test}
+  \caption{T1}
+  \label{fig:test1}
+  \end{subfigure}
+  \quad
+  \begin{subfigure}[b]{0.3\textwidth}
+  \includegraphics[width=\textwidth]{test}
+  \caption{T2}
+  \label{fig:test2}
+  \end{subfigure}
+\caption{Picture of tests}
+\label{fig:tests}
+\end{figure}
+\end{LTXexample}
+\end{frame}
+
+\subsection{Λίστες}
+
+\begin{frame}[containsverbatim]{Απλή λίστα}
+\begin{LTXexample}
+\begin{itemize}
+  \item A
+  \item B
+  \item C
+  \begin{itemize}
+    \item a
+    \item b
+  \end{itemize}
+  \item D
+  \item E
+\end{itemize}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Περιγραφική λίστα}
+\begin{LTXexample}
+\begin{description}
+  \item[A:]{AA}
+  \item[B:]{BB}
+  \item[C:]{CC}
+  \begin{description}
+    \item[a:]{aa}
+    \item[b:]{bb}
+  \end{description}
+  \item[D:]{DD}
+  \item[E:]{EE}
+\end{description}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Αριθμημένη λίστα}
+\begin{LTXexample}
+\begin{enumerate}
+  \item A
+  \item B
+  \item C
+  \begin{enumerate}
+    \item a
+    \item b
+  \end{enumerate}
+  \item D
+  \item E
+\end{enumerate}
+\end{LTXexample}
+\end{frame}
+
+\subsection{Πίνακες}
+
+\begin{frame}[containsverbatim]{Στοίχιση}
+\begin{LTXexample}
+\begin{tabbing}
+1 \= 2 \\
+\> 2 \= 3\\
+\> \> 3 \= 4 \\
+1 \> \> 3\\
+\end{tabbing}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Πίνακες (Tabular)}
+\begin{LTXexample}[pos=b,basicstyle=\ttfamily\scriptsize]
+\begin{tabular}{|r|c|p{1in}|}
+    \hline
+    \multicolumn{3}{|c|}{\sc Title} \\
+    \hline
+    \hline
+    \bf 1 & \bf 2 & \multicolumn{1}{c|}{\bf 3} \\
+    \hline
+    1 & 2 & 3333 \\
+    1 & 2 & 3333 \\
+    1 & 2 & 3333 \\ 
+    \hline
+\end{tabular}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Πίνακες (Table)}
+\begin{LTXexample}[basicstyle=\ttfamily\scriptsize]
+\begin{table}
+\caption{This is a table}
+\label{tab:label}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+    \toprule
+    \bf 1 & \bf 2 & \bf 3 \\
+    \midrule
+    1 & 2 & 3333 \\
+    1 & 2 & 3333 \\
+    1 & 2 & 3333 \\ 
+    \bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
+Refer to Table~\ref{tab:label}
+\end{LTXexample}
+\end{frame}
+
+\subsection{Γραφικά}
+
+\begin{frame}{Υποστηριζόμενες Εικόνες}
+\begin{tabular}{c p{3in}}
+Μεταγλωτιστής & Είδος αρχείου \\
+\hline
+latex & eps\\
+pdflatex & pdf, png, eps, jpg \\
+xetex & pdf, png, eps, jpg \\
+luatex & pdf, png, eps, jpg
+\end{tabular}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Γραφικά}
+\begin{LTXexample}[basicstyle=\ttfamily\scriptsize]
+\begin{figure}[H]
+\caption{This is a figure}
+\label{fig:label}
+\begin{center}
+\includegraphics[angle=90,width=.8\textwidth]{test}
+\end{center}
+\end{figure}
+
+Refer to Fig.~\ref{fig:label}
+\end{LTXexample}
+\end{frame}
+
+\subsection{Μαθηματικά}
+
+\begin{frame}{Τύποι}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\bf{Τύπος} & \bf{Σε κείμενο} & \bf{Σε εξίσωση} & \bf{Αριθμημένα}\\
+\hline
+Περιβάλλον & math & displaymath & equation \\
+& & equation* & \\
+\hline
+\LaTeX{} & \textbackslash( \ldots \textbackslash) & \textbackslash [ \ldots \textbackslash ] & \\
+\hline
+\TeX{} & \$ \ldots \$ & \&\& \ldots \&\& & \\
+\hline
+\end{tabular}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Παράδειγμα 1}
+\begin{LTXexample}[pos=b,basicstyle=\ttfamily\scriptsize]
+This is an inline math $\forall x \in X, \quad \exists y \leq \epsilon$
+
+but this is displayed \[\lim_{x \to \infty} \exp(-x) = 0 \]
+and this is numbered in eq.~\ref{eq:label}
+\begin{equation}
+k_{n+1} = n^2 + \sqrt{k^2_n - k_{n-1}}
+\label{eq:label}
+\end{equation}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Παράδειγμα 2}
+\begin{LTXexample}[pos=b,basicstyle=\ttfamily\scriptsize]
+\begin{equation}
+\frac{num}{denum} = \frac{1}{\frac{denum}{num}}
+\end{equation}
+\[
+ z = \overbrace{
+   \underbrace{x}_\text{real} + 
+   \underbrace{y}_\text{imaginary} i
+  }^\text{complex number}
+\]
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Παράδειγμα 3}
+\begin{LTXexample}[pos=b,basicstyle=\ttfamily\scriptsize]
+\begin{align*}
+\gamma = \int_0^\infty f(x) & \mathrm{d}x \\
+R & = 
+\begin{bmatrix}
+1 & 0 & 0 \\ 
+0 & 1 & 0 \\ 
+0 & 0 & \gamma 
+\end{bmatrix}
+\end{align*}
+\end{LTXexample}
+\end{frame}
+
+\subsection{Αλγόριθμοι}
+
+\begin{frame}[containsverbatim]{Αλγόριθμοι}
+\begin{LTXexample}[basicstyle=\ttfamily\scriptsize]
+\begin{algorithmic}
+\Function{split}{$S$, $i$}
+  \LState $S$ $\gets$ \Call{getCP}{$S[i]$}
+  \LState \Return $S$
+\EndFunction
+\end{algorithmic}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Πηγαίος Κώδικας 1}
+\begin{LTXexample}[pos=b,basicstyle=\ttfamily\scriptsize]
+\lstinputlisting[language=Python]{kinematics.py}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Πηγαίος Κώδικας 2}
+\begin{LTXexample}[pos=b,basicstyle=\ttfamily\scriptsize]
+\begin{minted}[mathescape,fontsize=\scriptsize]{vhdl}
+library IEEE;
+use IEEE.std_logic_1164.all;
+entity AND_gate is
+  port(x,y: in std_logic; z: out std_logic);
+end AND_gate;
+\end{minted}
+\end{LTXexample}
+
+Απαιτεί Python και Pygments!
+\end{frame}
+
+\subsection{Χημεία}
+
+\begin{frame}[containsverbatim]{Χημικές Ενώσεις 1}
+\begin{LTXexample}[basicstyle=\ttfamily\scriptsize]
+\chemfig{A-B}\\
+\chemfig{A=B}\\
+\chemfig{A~B}\\
+\chemfig{A>B}\\
+\chemfig{A<B}\\
+\chemfig{A>:B}\\
+\chemfig{A<:B}\\
+\chemfig{A>|B}\\
+\chemfig{A<|B}\\
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Χημικές Ενώσεις 2}
+\begin{LTXexample}[pos=b,basicstyle=\ttfamily\scriptsize]
+\chemfig{C(-[:0]H)(-[:90]H)(-[:180]H)(-[:270]H)} 
+\quad
+\chemfig{*6(=-=-=-)}
+\quad
+\chemfig{-(-[:45]O^{-})=[:315]O}
+\end{LTXexample}
+\end{frame}
+
+\section{Πακέτα}
+
+\begin{frame}{Πακέτα}
+\begin{block}{Προοίμιο}
+Το προοίμιο συνήθως είναι σταθερό. Το φτιάχνεις μία φορά και μετά χρησιμοποιείς πάντα το ίδιο. Μπορείς να το έχεις σε ένα ξεχωριστό αρχείο και να το εισάγεις με το \textbackslash input{} σε κάθε αρχείο σου.
+\end{block}
+\pause
+\begin{alertblock}{...αλλά...}
+ακόμα και έτσι, μπορεί να είναι αρκετά επίπονη και χρονοβόρα διαδικασία!
+\end{alertblock}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Χρήσιμα πακέτα}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{xltxtra}
+\usepackage{xgreek}
+\usepackage{xunicode}
+\usepackage{minted}
+\usepackage{chemfig}
+\usepackage{fontspec}
+\usepackage{booktabs}
+\usepackage{verbatim}
+\end{lstlisting}
+\end{frame}
+
+\section{Γραμματο\-σειρές}
+
+\begin{frame}{GFS}
+\url{http://www.greekfontsociety.gr/}
+
+{\fontspec{GFS Didot}GFS Didot}
+
+{\fontspec{GFS Neohellenic}GFS Neohellenic}
+
+{\fontspec{GFS Artemisia}GFS Artemisia}
+
+{\fontspec{GFS Theokritos}GFS Theokritos}
+\end{frame}
+
+\section{Βιβλιογραφία}
+
+\begin{frame}[containsverbatim]{Ενσωματωμένη}
+\begin{LTXexample}[pos=b,basicstyle=\ttfamily\scriptsize]
+\begin{thebibliography}{9}
+\bibitem{lamport94}
+  Leslie Lamport,
+  \emph{\LaTeX: a document preparation system}.
+  Addison Wesley, Massachusetts,
+  2nd edition,
+  1994.
+\end{thebibliography}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Εξωτερική (BibTeX)}
+\begin{block}{Αρχείο .bib}
+Η βιβλιογραφία αποθηκεύεται εκτός του κειμένου σε ξεχωριστό αρχείο με ειδική μορφή. 
+\end{block}
+
+\begin{lstlisting}[pos=b,basicstyle=\ttfamily\scriptsize]
+@book{lamport94,
+  title     = {LaTeX: A document preparation system},
+  author    = {Lamport, Leslie},
+  year      = {1994},
+  edition   = {2nd},
+  publisher = {Reading, Mass: Addison-Wesley Professional. ISBN 0-201-52983-1}
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Αναφορές (BibTeX)}
+\bf{Αυτόματη αρίθμηση και αλλαγή του στυλ πολύ εύκολα!}
+\begin{lstlisting}[pos=b,basicstyle=\ttfamily\scriptsize]
+\cite{lamport94} created a great document preparation system!
+
+\bibliographystyle{plain}
+\bibliography{path/to/file}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Συμβατότητα}
+\begin{itemize}
+\item Mendeley
+\item Zotero
+\item JabRef
+\item CiteULike
+\item Ebib
+\item Όλες τις ιστοσελίδες επιστημονικών περιοδικών (Scholar, scopus, IEEE κλπ)
+\end{itemize}
+\end{frame}
+
+\section{Γραφικά}
+
+\begin{frame}{Το TikZ}
+\begin{alertblock}{PGF/TikZ}
+Πακέτο που επιτρέπει να φτιάξεις γραφικά απευθείας στο \TeX{} χωρίς να εισάγεις εικόνες από άλλα προγράμματα.
+\end{alertblock}
+\begin{itemize}
+\item Πολλά πακέτα με διαφορετικές δυνατότητες
+\item Δυνατότητα μακροεντολών
+\item Αλλαγή των χαρακτηριστικών εύκολα
+\item Αλλαγή των χαρακτηριστικών με τέλεια ποιότητα
+\end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Βασική χρήση}
+\begin{LTXexample}[basicstyle=\ttfamily\scriptsize]
+\begin{tikzpicture}
+\draw (1,0) -- (0,0) -- (0,1) -- cycle;
+\end{tikzpicture}
+\end{LTXexample}
+\begin{LTXexample}[basicstyle=\ttfamily\scriptsize]
+\begin{tikzpicture}
+\draw (0,0) .. controls (1,1) .. (2,0)
+      (3,0) .. controls (3,1) and (2,1) .. (2,2);
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\begin{frame}[containsverbatim]{Βασική χρήση}
+\begin{LTXexample}[basicstyle=\ttfamily\scriptsize]
+\begin{tikzpicture}
+\foreach \x in {0,...,4} 
+  \draw (\x,0) circle (0.4);
+\end{tikzpicture}
+\end{LTXexample}
+\begin{LTXexample}[basicstyle=\ttfamily\scriptsize]
+\begin{tikzpicture}
+\draw[dotted]
+    (0,0) node {1st node}
+ -- (1,1) node {2nd node}
+ -- (0,2) node {3rd node}
+ -- cycle;
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+
+\begin{frame}[containsverbatim]{Προχωρημένη χρήση}
+\begin{LTXexample}[basicstyle=\ttfamily\scriptsize]
+\begin{tikzpicture}
+  \node (S) {};
+  \draw[thick,color=blue,->] (0,0) node[anchor=north west]{$\{S\}$} -- (1,0) node[anchor=south west]{$x$};
+  \draw[thick,color=blue,->] (0,0) -- (0,1) node[anchor=south west]{$y$};
+  \mobilebase
+\end{tikzpicture}
+\end{LTXexample}
+\end{frame}
+
+\end{document}

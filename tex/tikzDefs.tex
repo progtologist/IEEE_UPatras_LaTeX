@@ -1,0 +1,86 @@
+% Define a variable as a length
+\newcommand{\nvar}[2]{%
+\newlength{#1}
+\setlength{#1}{#2}
+}
+% Define a few constants for drawing
+\nvar{\dg}{0.3cm}
+\def\dw{0.25}
+\def\dh{0.5}
+\def\mbw{2.5}
+\def\mbl{5}
+% Define commands for links, joints and such
+\def\link{\draw [double distance=1.5mm, very thick] (0,0)--}
+\def\joint{
+  \filldraw [fill=white] (0,0) circle (5pt);
+  \fill[black] circle (2pt);
+}
+\def\grip{
+  \draw[ultra thick](0cm,5mm)--(0cm,-5mm);
+  \fill (0cm, 2.5mm)+(0cm,2.5mm) -- +(1.6*5mm,0cm) -- +(0pt,-2.5mm);
+  \fill (0cm, -2.5mm)+(0cm,2.5mm) -- +(1.6*5mm,0cm) -- +(0pt,-2.5mm) node[color=blue,anchor=north west]{$\{T\}$};
+  \draw[thick,color=blue,->] (0,0) -- (1,0);
+  \draw[thick,color=blue,->] (0,0) -- (0,1);
+}
+\def\robotbase{
+  \fill[white] (-10pt,-20pt) rectangle (10pt,20pt);
+  \draw[ultra thick] (-10pt,-20pt) -- (-10pt,20pt) -- (10pt,20pt) -- (10pt,-20pt) -- (-10pt,-20pt);
+  \draw[ultra thick] (-10pt,0) -- (10pt,0);
+  \fill[pattern=north east lines] (-10mm,0mm) rectangle (10mm,-10mm);
+}
+\def\mobilebase{
+  %base
+  \draw[ultra thick] (-\mbl/2,-\mbw/2)--(\mbl/2,-\mbw/2)--(\mbl/2,\mbw/2)--(-\mbl/2,\mbw/2)--(-\mbl/2,-\mbw/2);
+  %first wheel
+  \draw[ultra thick] (-\mbl*0.375,-\mbw/2) -- (-0.125*\mbl,-\mbw/2) -- (-0.125*\mbl,-0.6*\mbw) -- (-\mbl*0.375,-0.6*\mbw) -- (-\mbl*0.375,-\mbw/2);
+  \fill[black] (-\mbl*0.375,-\mbw/2) rectangle (-0.125*\mbl,-0.6*\mbw);
+  %second wheel
+  \draw[ultra thick] (\mbl*0.375,-\mbw/2) -- (0.125*\mbl,-\mbw/2) -- (0.125*\mbl,-0.6*\mbw) -- (\mbl*0.375,-0.6*\mbw) -- (\mbl*0.375,-\mbw/2);
+  \fill[black] (\mbl*0.375,-\mbw/2) rectangle (0.125*\mbl,-0.6*\mbw);
+  %third wheel
+  \draw[ultra thick] (-\mbl*0.375,\mbw/2) -- (-0.125*\mbl,\mbw/2) -- (-0.125*\mbl,0.6*\mbw) -- (-\mbl*0.375,0.6*\mbw) -- (-\mbl*0.375,\mbw/2);
+  \fill[black] (-\mbl*0.375,\mbw/2) rectangle (-0.125*\mbl,0.6*\mbw);
+  %fourth wheel
+  \draw[ultra thick] (\mbl*0.375,\mbw/2) -- (0.125*\mbl,\mbw/2) -- (0.125*\mbl,0.6*\mbw) -- (\mbl*0.375,0.6*\mbw) -- (\mbl*0.375,\mbw/2);
+  \fill[black] (\mbl*0.375,\mbw/2) rectangle (0.125*\mbl,0.6*\mbw);
+}
+\tikzset{
+    elli/.style args={#1:#2and#3}{
+        draw,
+        shape=ellipse,
+        rotate=#1,
+        minimum width=2*#2,
+        minimum height=2*#3,
+        outer sep=0pt,
+    },
+    /pgf/decoration/raise/.append code={
+        \def\tikzdecorationsbrace{#1}
+    },
+    elli node/.style={
+        circle,
+        black,
+        draw=none,
+        midway,
+        anchor=#1-90,
+        inner sep=0pt,
+        shift=(#1+90:\tikzdecorationsbrace+\pgfdecorationsegmentamplitude)
+    },
+    eigen/.style 2 args={
+        decorate,
+        decoration={
+            brace,
+            amplitude=#1,
+            mirror,
+            raise=#2,
+        },
+    },
+    eigen/.default={15pt}{4pt},
+    axis/.style={
+        line width=.5,
+        ->,
+    },
+    normal axis/.style={
+        axis,
+        dashed,
+    }
+}

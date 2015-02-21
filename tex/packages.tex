@@ -1,0 +1,98 @@
+% !TEX root = ../main.tex
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{graphicx}		% for pdf, bitmapped graphics files
+\graphicspath{ {figs/} }
+\usepackage{mathtools} 		% assumes mathtools package installed
+\usepackage{amssymb}  		% assumes amssymb package installed
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{setspace}
+\usepackage{listings}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{patterns}
+\usepackage{xcolor}
+\usepackage{tabularx,lipsum}
+\usepackage{xltxtra}
+\usepackage{xgreek}
+\usepackage{minted}
+\usepackage{chemfig}
+\usepackage{fontspec}
+\usepackage{booktabs}
+\setmainfont[Mapping=tex-text]{GFS Didot}
+\setsansfont[Mapping=tex-text]{GFS Didot}
+\usepackage{xunicode}
+\usepackage{verbatim}
+\usepackage{showexpl}
+\let\orilabel\label
+\lstloadlanguages{[LaTeX]Tex}
+\lstset{%
+     basicstyle=\ttfamily\small,
+     commentstyle=\itshape\ttfamily\small,
+     showspaces=false,
+     showstringspaces=false,
+     breaklines=true,
+     breakautoindent=true,
+     captionpos=t,
+     language=[LaTeX]TeX,
+     keywordstyle=\color{blue},
+     identifierstyle=\color{magenta},
+     extendedchars=true,
+     inputencoding=utf8,
+     pos=r,
+     backgroundcolor=\color{yellow},
+     frame=single,
+     preset=\let\label\orilabel,
+}
+\lstset{explpreset={numbers=none}}
+
+\makeatletter
+% This is the vertical rule that is inserted
+\def\therule{\makebox[\algorithmicindent][l]{\hspace*{.5em}\vrule height .75\baselineskip depth .25\baselineskip}}%
+
+\newtoks\therules% Contains rules
+\therules={}% Start with empty token list
+\def\appendto#1#2{\expandafter#1\expandafter{\the#1#2}}% Append to token list
+\def\gobblefirst#1{% Remove (first) from token list
+  #1\expandafter\expandafter\expandafter{\expandafter\@gobble\the#1}}%
+\def\LState{\State\unskip\the\therules}% New line-state
+\def\pushindent{\appendto\therules\therule}%
+\def\popindent{\gobblefirst\therules}%
+\def\printindent{\unskip\the\therules}%
+\def\printandpush{\printindent\pushindent}%
+\def\popandprint{\popindent\printindent}%
+
+%      ***      DECLARED LOOPS      ***
+% (from algpseudocode.sty)
+\algdef{SE}[WHILE]{While}{EndWhile}[1]
+  {\printandpush\algorithmicwhile\ #1\ \algorithmicdo}
+  {\popandprint\algorithmicend\ \algorithmicwhile}%
+\algdef{SE}[FOR]{For}{EndFor}[1]
+  {\printandpush\algorithmicfor\ #1\ \algorithmicdo}
+  {\popandprint\algorithmicend\ \algorithmicfor}%
+\algdef{S}[FOR]{ForAll}[1]
+  {\printindent\algorithmicforall\ #1\ \algorithmicdo}%
+\algdef{SE}[LOOP]{Loop}{EndLoop}
+  {\printandpush\algorithmicloop}
+  {\popandprint\algorithmicend\ \algorithmicloop}%
+\algdef{SE}[REPEAT]{Repeat}{Until}
+  {\printandpush\algorithmicrepeat}[1]
+  {\popandprint\algorithmicuntil\ #1}%
+\algdef{SE}[IF]{If}{EndIf}[1]
+  {\printandpush\algorithmicif\ #1\ \algorithmicthen}
+  {\popandprint\algorithmicend\ \algorithmicif}%
+\algdef{C}[IF]{IF}{ElsIf}[1]
+  {\popandprint\pushindent\algorithmicelse\ \algorithmicif\ #1\ \algorithmicthen}%
+\algdef{Ce}[ELSE]{IF}{Else}{EndIf}
+  {\popandprint\pushindent\algorithmicelse}%
+\algdef{SE}[PROCEDURE]{Procedure}{EndProcedure}[2]
+   {\printandpush\algorithmicprocedure\ \textproc{#1}\ifthenelse{\equal{#2}{}}{}{(#2)}}%
+   {\popandprint\algorithmicend\ \algorithmicprocedure}%
+\algdef{SE}[FUNCTION]{Function}{EndFunction}[2]
+   {\printandpush\algorithmicfunction\ \textproc{#1}\ifthenelse{\equal{#2}{}}{}{(#2)}}%
+   {\popandprint\algorithmicend\ \algorithmicfunction}%
+\makeatother
